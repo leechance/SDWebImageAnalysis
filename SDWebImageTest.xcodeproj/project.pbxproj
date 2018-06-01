@@ -22,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C19510C20C123FB00DABCCD /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
 		4CA69BCD20AE9CE10034A710 /* SDWebImageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDWebImageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CA69BD020AE9CE10034A710 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4CA69BD120AE9CE10034A710 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 			children = (
 				4CA69BED20AE9D2D0034A710 /* README.md */,
 				4CA69BEE20AE9D2D0034A710 /* SDImageCache.h */,
+				4C19510C20C123FB00DABCCD /* SDImageCacheDelegate.h */,
 				4CA69BEC20AE9D2D0034A710 /* SDImageCache.m */,
 				4CA69BEF20AE9D2E0034A710 /* SDWebImageDownloader.h */,
 				4CA69BF020AE9D2E0034A710 /* SDWebImageDownloader.m */,
