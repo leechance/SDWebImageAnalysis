@@ -25,7 +25,6 @@ static SDImageCache *instance;
         memCache = [[NSMutableDictionary alloc] init];
 
         // Init the disk cache
-        storeDataQueue = [[NSMutableDictionary alloc] init];
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         diskCachePath = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"ImageCache"] retain];
 
@@ -43,6 +42,7 @@ static SDImageCache *instance;
         cacheOutQueue = [[NSOperationQueue alloc] init];
         cacheOutQueue.maxConcurrentOperationCount = 1;
 
+#if TARGET_OS_IPHONE
         // Subscribe to app events
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(clearMemory)
@@ -54,7 +54,7 @@ static SDImageCache *instance;
                                                      name:UIApplicationWillTerminateNotification
                                                    object:nil];
 
-        #ifdef __IPHONE_4_0
+#ifdef __IPHONE_4_0
         UIDevice *device = [UIDevice currentDevice];
         if ([device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported)
         {
@@ -64,7 +64,8 @@ static SDImageCache *instance;
                                                          name:UIApplicationDidEnterBackgroundNotification
                                                        object:nil];
         }
-        #endif
+#endif
+#endif
     }
 
     return self;
@@ -75,7 +76,6 @@ static SDImageCache *instance;
     [memCache release], memCache = nil;
     [diskCachePath release], diskCachePath = nil;
     [cacheInQueue release], cacheInQueue = nil;
-    [storeDataQueue release], storeDataQueue = nil;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -100,26 +100,24 @@ static SDImageCache *instance;
 {
     const char *str = [key UTF8String];
     unsigned char r[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(str, strlen(str), r);
+    CC_MD5(str, (CC_LONG)strlen(str), r);
     NSString *filename = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
                           r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12], r[13], r[14], r[15]];
 
     return [diskCachePath stringByAppendingPathComponent:filename];
 }
 
-- (void)storeKeyToDisk:(NSString *)key
+- (void)storeKeyWithDataToDisk:(NSArray *)keyAndData
 {
     // Can't use defaultManager another thread
     NSFileManager *fileManager = [[NSFileManager alloc] init];
 
-    NSData *data = [storeDataQueue objectForKey:key];
+    NSString *key = [keyAndData objectAtIndex:0];
+    NSData *data = [keyAndData count] > 1 ? [keyAndData objectAtIndex:1] : nil;
+
     if (data)
     {
         [fileManager createFileAtPath:[self cachePathForKey:key] contents:data attributes:nil];
-        @synchronized(storeDataQueue)
-        {
-            [storeDataQueue removeObjectForKey:key];
-        }
     }
     else
     {
@@ -128,7 +126,13 @@ static SDImageCache *instance;
         UIImage *image = [[self imageFromKey:key fromDisk:YES] retain]; // be thread safe with no lock
         if (image)
         {
+#if TARGET_OS_IPHONE
             [fileManager createFileAtPath:[self cachePathForKey:key] contents:UIImageJPEGRepresentation(image, (CGFloat)1.0) attributes:nil];
+#else
+            NSArray*  representations  = [image representations];
+            NSData* jpegData = [NSBitmapImageRep representationOfImageRepsInArray: representations usingType: NSJPEGFileType properties:nil];
+            [fileManager createFileAtPath:[self cachePathForKey:key] contents:jpegData attributes:nil];
+#endif
             [image release];
         }
     }
@@ -184,17 +188,23 @@ static SDImageCache *instance;
         return;
     }
 
-    if (toDisk && !data)
-    {
-        return;
-    }
-
     [memCache setObject:image forKey:key];
 
     if (toDisk)
     {
-        [storeDataQueue setObject:data forKey:key];
-        [cacheInQueue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(storeKeyToDisk:) object:key] autorelease]];
+        if (!data) return;
+        NSArray *keyWithData;
+        if (data)
+        {
+            keyWithData = [NSArray arrayWithObjects:key, data, nil];
+        }
+        else
+        {
+            keyWithData = [NSArray arrayWithObjects:key, nil];
+        }
+        [cacheInQueue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self
+                                                                         selector:@selector(storeKeyWithDataToDisk:)
+                                                                           object:keyWithData] autorelease]];
     }
 }
 

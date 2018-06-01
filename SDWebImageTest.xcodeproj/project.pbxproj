@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C19511C20C12D4900DABCCD /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C19511B20C12D4900DABCCD /* UIButton+WebCache.m */; };
 		4CA69BD220AE9CE10034A710 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA69BD120AE9CE10034A710 /* AppDelegate.m */; };
 		4CA69BD520AE9CE10034A710 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA69BD420AE9CE10034A710 /* ViewController.m */; };
 		4CA69BD820AE9CE10034A710 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4CA69BD620AE9CE10034A710 /* Main.storyboard */; };
@@ -23,6 +24,9 @@
 
 /* Begin PBXFileReference section */
 		4C19510C20C123FB00DABCCD /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
+		4C19511920C12D4800DABCCD /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDWebImageCompat.h; path = SDWebImage1.0.0/SDWebImageCompat.h; sourceTree = "<group>"; };
+		4C19511A20C12D4800DABCCD /* UIButton+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+WebCache.h"; path = "SDWebImage1.0.0/UIButton+WebCache.h"; sourceTree = "<group>"; };
+		4C19511B20C12D4900DABCCD /* UIButton+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+WebCache.m"; path = "SDWebImage1.0.0/UIButton+WebCache.m"; sourceTree = "<group>"; };
 		4CA69BCD20AE9CE10034A710 /* SDWebImageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDWebImageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CA69BD020AE9CE10034A710 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4CA69BD120AE9CE10034A710 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -62,6 +66,9 @@
 		4CA69BC420AE9CE10034A710 = {
 			isa = PBXGroup;
 			children = (
+				4C19511920C12D4800DABCCD /* SDWebImageCompat.h */,
+				4C19511A20C12D4800DABCCD /* UIButton+WebCache.h */,
+				4C19511B20C12D4900DABCCD /* UIButton+WebCache.m */,
 				4CA69BE620AE9CF80034A710 /* SDWebImage1.0.0 */,
 				4CA69BCF20AE9CE10034A710 /* SDWebImageTest */,
 				4CA69BCE20AE9CE10034A710 /* Products */,
@@ -197,6 +204,7 @@
 				4CA69BF220AE9D2E0034A710 /* SDWebImageManager.m in Sources */,
 				4CA69BF320AE9D2E0034A710 /* UIImageView+WebCache.m in Sources */,
 				4CA69BE020AE9CE10034A710 /* main.m in Sources */,
+				4C19511C20C12D4900DABCCD /* UIButton+WebCache.m in Sources */,
 				4CA69BF620AE9D2E0034A710 /* SDWebImageDownloader.m in Sources */,
 				4CA69BD220AE9CE10034A710 /* AppDelegate.m in Sources */,
 			);
